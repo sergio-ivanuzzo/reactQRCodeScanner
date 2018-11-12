@@ -1,14 +1,11 @@
 import React from 'react';
 import Btn from './button';
 import InputField from './input';
-import {connect} from 'react-redux';
-import {doLogin} from '../Redux/actions/index';
 
-class ConnectedLoginForm extends React.Component {
+export default class LoginForm extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            disabled: true,
             login: null,
             password: null
         }
@@ -16,14 +13,14 @@ class ConnectedLoginForm extends React.Component {
 
     onChange(e) {
         this.setState({
-            [e.target.name]: e.target.value,
-            disabled: !this.state.login || !this.state.password
+            [e.target.name]: e.target.value
         })
     }
 
     onSubmit(e) {
         e.preventDefault();
         let token = this.encode(`${this.state.login}:${this.state.password}`);
+        // calling redux action
         this.props.doLogin(token);
     }
 
@@ -32,33 +29,22 @@ class ConnectedLoginForm extends React.Component {
     }
 
     render() {
+        console.log('rendered')
         return (
-            <form id="login-form" onSubmit={this.onSubmit}>
+            <form id="login-form" onSubmit={this.onSubmit.bind(this)}>
                 <InputField type="text"
                             name="login"
-                            onChange={this.onChange}
+                            onChange={this.onChange.bind(this)}
                             placeholder="Login"/>
 
                 <InputField type="password"
                             name="password"
-                            onChange={this.onChange}
+                            onChange={this.onChange.bind(this)}
                             placeholder="Password" />
 
-                <Btn type="submit"
-                     text="Sign Up"
-                     disabled={this.state.disabled}/>
+                <Btn type="submit" text="Sign Up" />
 
             </form>
         );
     }
 }
-
-const mapDispatchToProps = dispatch => {
-    return {
-        doLogin: token => dispatch(doLogin(token))
-    }
-}
-
-const LoginForm = connect(null, mapDispatchToProps)(LoginForm);
-
-export default LoginForm;

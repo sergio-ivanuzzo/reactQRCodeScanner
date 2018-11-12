@@ -1,16 +1,14 @@
-import {DO_LOGIN} from "../constants/action-types";
+import {DO_LOGIN} from '../constants/action-types';
 
 const initialState = {
-    isLogged: false
+    token: null
 }
 
-const loginReducer = (state = initialState, action) => {
+export const loginReducer = (state = initialState, action) => {
     switch (action.type) {
         case DO_LOGIN:
-            return {...state, isLogged: true}
+            return {...state, token: action.payload}
         default:
             return state;
     }
 }
-
-export default loginReducer;

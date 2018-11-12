@@ -1,12 +1,10 @@
 import React from 'react';
 import jsQR from 'jsqr';
-import {connect} from 'react-redux';
-
 
 let QR_CODE_FOUND     = "white";
 let QR_CODE_NOT_FOUND = "red";
 
-class ConnectedCaptureArea extends React.Component {
+export default class CaptureArea extends React.Component {
     constructor(props) {
         super(props)
         // coordinates are dynamically calculates depends on videoTag size
@@ -79,11 +77,3 @@ class ConnectedCaptureArea extends React.Component {
         );
     }
 }
-
-const mapStateToProps = state => {
-    return {parsedQRCode: state.parsedQRCode}
-}
-
-const CaptureArea = connect(mapStateToProps)(ConnectedCaptureArea);
-
-export default CaptureArea;

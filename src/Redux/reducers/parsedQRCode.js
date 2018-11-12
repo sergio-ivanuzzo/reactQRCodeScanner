@@ -1,8 +1,10 @@
+import {PARSE_QR_CODE, SCAN_QR_CODE} from "../constants/action-types";
+
 const initialState = {
     parsedQRCode: null
 }
 
-const QRCodeReducer = (state = initialState, action) => {
+export const QRCodeReducer = (state = initialState, action) => {
     switch (action.type) {
         case SCAN_QR_CODE:
             return {...state, parsedQRCode: null}
@@ -12,5 +14,3 @@ const QRCodeReducer = (state = initialState, action) => {
             return state;
     }
 }
-
-export default QRCodeReducer;

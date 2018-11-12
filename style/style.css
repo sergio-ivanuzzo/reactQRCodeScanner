@@ -1,0 +1,11 @@
+#content {
+    position: relative;
+}
+
+.qr-capture-area {
+    position: absolute;
+}
+
+.qr-capture-area > svg {
+    overflow: visible;
+}

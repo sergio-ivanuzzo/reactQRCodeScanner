@@ -20,3 +20,42 @@ button {
     color: white;
     box-shadow: 0 0 2px blue;
 }
+
+header {
+    height: 70px;
+    text-align: center;
+    border-bottom: 2px solid #0066cc;
+    vertical-align: middle;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 32px;
+}
+
+#content {
+    width: 224px;
+    height: 224px;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    height: 100px;
+    background-color: #e7e9ec;
+    right: 0;
+    left: 0;
+    text-align: center;
+    font-size: 10px;
+    color: white;
+}
+
+input, button {
+    padding: 10px;
+}

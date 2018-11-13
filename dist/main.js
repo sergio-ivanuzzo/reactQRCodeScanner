@@ -39786,10 +39786,10 @@ function (_React$Component) {
   _createClass(Btn, [{
     key: "render",
     value: function render() {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
         type: this.props.type,
         onClick: this.props.onClick
-      }, this.props.text);
+      }, this.props.text));
     }
   }]);
 
@@ -39846,12 +39846,12 @@ function (_React$Component) {
   _createClass(InputField, [{
     key: "render",
     value: function render() {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
         type: this.props.type,
         name: this.props.name,
         onChange: this.props.onChange,
         placeholder: this.props.placeholder
-      });
+      }));
     }
   }]);
 
@@ -39928,8 +39928,7 @@ function (_React$Component) {
     key: "onSubmit",
     value: function onSubmit(e) {
       e.preventDefault();
-      var token = this.encode("".concat(this.state.loginReducer, ":").concat(this.state.password));
-      console.log(this.props); // calling redux action
+      var token = this.encode("".concat(this.state.loginReducer, ":").concat(this.state.password)); // calling redux action
 
       this.props.doLogin(token);
       this.props.history.push('/scan');
@@ -40070,8 +40069,6 @@ function (_React$Component) {
           }); // change application state (redux)
 
 
-          console.log('res=', result.data);
-
           _this2.props.parseQRCode(result.data); // delay on redirect for show capture area color changing
 
 
@@ -40099,7 +40096,6 @@ function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
-      console.log('render', this.props);
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "qr-capture-area",
         style: this.state.style,
@@ -40480,10 +40476,8 @@ var PrivateRoute = function PrivateRoute(_ref) {
       redirectTo = _ref.redirectTo,
       rest = _objectWithoutProperties(_ref, ["component", "redirectTo"]);
 
-  console.log('rest=', rest);
   return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], _extends({}, rest, {
     render: function render(routeProps) {
-      console.log('routeProps=', routeProps);
       return !!rest.token ? Object(_renderMergedProps__WEBPACK_IMPORTED_MODULE_0__["renderMergedProps"])(component, routeProps, rest) : react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
         to: {
           pathname: redirectTo,
@@ -40525,7 +40519,6 @@ var PropsRoute = function PropsRoute(_ref) {
   var component = _ref.component,
       rest = _objectWithoutProperties(_ref, ["component"]);
 
-  console.log('props token', rest.token);
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Route"], _extends({}, rest, {
     render: function render(routeProps) {
       return Object(_renderMergedProps__WEBPACK_IMPORTED_MODULE_2__["renderMergedProps"])(component, routeProps, rest);
@@ -40871,7 +40864,7 @@ function (_React$Component) {
   _createClass(AppFooter, [{
     key: "render",
     value: function render() {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("footer", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "Footer"));
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("footer", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "Developed by Sergio Ivanuzzo as Test Task on ReactJS + Redux"));
     }
   }]);
 

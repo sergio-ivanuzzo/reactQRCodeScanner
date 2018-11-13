@@ -55,7 +55,6 @@ export default class CaptureArea extends React.Component {
                 });
 
                 // change application state (redux)
-                console.log('res=', result.data);
                 this.props.parseQRCode(result.data);
 
                 // delay on redirect for show capture area color changing
@@ -83,7 +82,6 @@ export default class CaptureArea extends React.Component {
     }
 
     render() {
-        console.log('render', this.props)
         return (
             <div className="qr-capture-area" style={this.state.style} title={this.props.title}>
                 <svg xmlns="http://www.w3.org/2000/svg">

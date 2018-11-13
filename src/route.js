@@ -16,7 +16,6 @@ export class Route extends React.Component {
     }
 
     tryRender() {
-        console.log('test')
         history.pushState({page: this.props.path}, this.props.path, this.props.path);
         if (location.pathname == this.props.path) {
             this.setState({

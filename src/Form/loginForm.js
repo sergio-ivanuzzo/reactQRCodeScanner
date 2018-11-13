@@ -21,7 +21,6 @@ class LoginForm extends React.Component {
     onSubmit(e) {
         e.preventDefault();
         let token = this.encode(`${this.state.loginReducer}:${this.state.password}`);
-        console.log(this.props)
         // calling redux action
         this.props.doLogin(token);
         this.props.history.push('/scan');

@@ -46,12 +46,25 @@ export default class CaptureArea extends React.Component {
     }
 
     componentDidMount() {
-        setInterval(() => {
+        let timer = setInterval(() => {
             let result = this.scanQrCode();
             if (result) {
+                // change capture area color to show that QR code captured successfully
                 this.setState({
                     color: QR_CODE_FOUND
-                })
+                });
+
+                // change application state (redux)
+                console.log('res=', result.data);
+                this.props.parseQRCode(result.data);
+
+                // delay on redirect for show capture area color changing
+                setTimeout(() => {
+                    // stop timer
+                    clearInterval(timer);
+                    this.props.history.push('/result');
+                }, 1000);
+
             } else {
                 this.setState({
                     color: QR_CODE_NOT_FOUND
@@ -63,7 +76,14 @@ export default class CaptureArea extends React.Component {
         this.center()
     }
 
+    shouldComponentUpdate(nextProps, nextState) {
+        // prevent extra render
+        return this.state.color != nextState.color ||
+            JSON.stringify(this.state.style) != JSON.stringify(nextState.style);
+    }
+
     render() {
+        console.log('render', this.props)
         return (
             <div className="qr-capture-area" style={this.state.style} title={this.props.title}>
                 <svg xmlns="http://www.w3.org/2000/svg">

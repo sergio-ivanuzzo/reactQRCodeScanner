@@ -9,3 +9,14 @@
 .qr-capture-area > svg {
     overflow: visible;
 }
+
+.parsed-qr-code .result {
+    color: blue;
+}
+
+button {
+    border: none;
+    background-color: green;
+    color: white;
+    box-shadow: 0 0 2px blue;
+}

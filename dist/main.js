@@ -39787,7 +39787,8 @@ function (_React$Component) {
     key: "render",
     value: function render() {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
-        type: this.props.type
+        type: this.props.type,
+        onClick: this.props.onClick
       }, this.props.text);
     }
   }]);
@@ -39870,11 +39871,11 @@ function (_React$Component) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return LoginForm; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _button__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./button */ "./src/Form/button.js");
 /* harmony import */ var _input__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./input */ "./src/Form/input.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -39899,6 +39900,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
+
 var LoginForm =
 /*#__PURE__*/
 function (_React$Component) {
@@ -39911,7 +39913,7 @@ function (_React$Component) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(LoginForm).call(this, props));
     _this.state = {
-      login: null,
+      loginReducer: null,
       password: null
     };
     return _this;
@@ -39926,9 +39928,11 @@ function (_React$Component) {
     key: "onSubmit",
     value: function onSubmit(e) {
       e.preventDefault();
-      var token = this.encode("".concat(this.state.login, ":").concat(this.state.password)); // calling redux action
+      var token = this.encode("".concat(this.state.loginReducer, ":").concat(this.state.password));
+      console.log(this.props); // calling redux action
 
       this.props.doLogin(token);
+      this.props.history.push('/scan');
     }
   }, {
     key: "encode",
@@ -39938,7 +39942,6 @@ function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
-      console.log('rendered');
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
         id: "login-form",
         onSubmit: this.onSubmit.bind(this)
@@ -39962,7 +39965,8 @@ function (_React$Component) {
   return LoginForm;
 }(react__WEBPACK_IMPORTED_MODULE_0___default.a.Component);
 
-
+var LoginFormWithRouter = Object(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["withRouter"])(LoginForm);
+/* harmony default export */ __webpack_exports__["default"] = (LoginFormWithRouter);
 
 /***/ }),
 
@@ -40056,13 +40060,27 @@ function (_React$Component) {
     value: function componentDidMount() {
       var _this2 = this;
 
-      setInterval(function () {
+      var timer = setInterval(function () {
         var result = _this2.scanQrCode();
 
         if (result) {
+          // change capture area color to show that QR code captured successfully
           _this2.setState({
             color: QR_CODE_FOUND
-          });
+          }); // change application state (redux)
+
+
+          console.log('res=', result.data);
+
+          _this2.props.parseQRCode(result.data); // delay on redirect for show capture area color changing
+
+
+          setTimeout(function () {
+            // stop timer
+            clearInterval(timer);
+
+            _this2.props.history.push('/result');
+          }, 1000);
         } else {
           _this2.setState({
             color: QR_CODE_NOT_FOUND
@@ -40073,8 +40091,15 @@ function (_React$Component) {
       this.center();
     }
   }, {
+    key: "shouldComponentUpdate",
+    value: function shouldComponentUpdate(nextProps, nextState) {
+      // prevent extra render
+      return this.state.color != nextState.color || JSON.stringify(this.state.style) != JSON.stringify(nextState.style);
+    }
+  }, {
     key: "render",
     value: function render() {
+      console.log('render', this.props);
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "qr-capture-area",
         style: this.state.style,
@@ -40107,10 +40132,10 @@ function (_React$Component) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return ParsedQRCode; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _Form_button__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Form/button */ "./src/Form/button.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -40128,6 +40153,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
 
 
 
@@ -40144,6 +40170,12 @@ function (_React$Component) {
   }
 
   _createClass(ParsedQRCode, [{
+    key: "scanAnotherQRCode",
+    value: function scanAnotherQRCode() {
+      this.props.scanQRCode();
+      this.props.history.push('/scan');
+    }
+  }, {
     key: "render",
     value: function render() {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -40152,7 +40184,8 @@ function (_React$Component) {
         className: "result"
       }, this.props.result), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Form_button__WEBPACK_IMPORTED_MODULE_1__["default"], {
         type: "button",
-        text: "Scan another QR code"
+        text: "Scan another QR code",
+        onClick: this.scanAnotherQRCode.bind(this)
       }));
     }
   }]);
@@ -40160,7 +40193,8 @@ function (_React$Component) {
   return ParsedQRCode;
 }(react__WEBPACK_IMPORTED_MODULE_0___default.a.Component);
 
-
+var ParsedQRCodeWithRouter = Object(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["withRouter"])(ParsedQRCode);
+/* harmony default export */ __webpack_exports__["default"] = (ParsedQRCodeWithRouter);
 
 /***/ }),
 
@@ -40168,16 +40202,17 @@ function (_React$Component) {
 /*!*******************************!*\
   !*** ./src/QRCode/scanner.js ***!
   \*******************************/
-/*! exports provided: Scanner */
+/*! exports provided: ScannerWithRouter */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Scanner", function() { return Scanner; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ScannerWithRouter", function() { return ScannerWithRouter; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _Webcam_webcamStream__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Webcam/webcamStream */ "./src/Webcam/webcamStream.js");
 /* harmony import */ var _QRCode_captureArea__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../QRCode/captureArea */ "./src/QRCode/captureArea.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -40195,6 +40230,8 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+
 
 
 
@@ -40226,7 +40263,9 @@ function (_React$Component) {
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_QRCode_captureArea__WEBPACK_IMPORTED_MODULE_2__["default"], {
         width: "120",
         height: "120",
+        parseQRCode: this.props.parseQRCode,
         videoTag: this.videoTag,
+        history: this.props.history,
         title: "Place the QR code to the center of capture area"
       }));
     }
@@ -40235,24 +40274,40 @@ function (_React$Component) {
   return Scanner;
 }(react__WEBPACK_IMPORTED_MODULE_0___default.a.Component);
 
+var ScannerWithRouter = Object(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["withRouter"])(Scanner);
+
 /***/ }),
 
 /***/ "./src/Redux/actions/index.js":
 /*!************************************!*\
   !*** ./src/Redux/actions/index.js ***!
   \************************************/
-/*! exports provided: doLogin */
+/*! exports provided: doLogin, scanQRCode, parseQRCode */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "doLogin", function() { return doLogin; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "scanQRCode", function() { return scanQRCode; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "parseQRCode", function() { return parseQRCode; });
 /* harmony import */ var _constants_action_types__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constants/action-types */ "./src/Redux/constants/action-types.js");
 
 var doLogin = function doLogin(token) {
   return {
     type: _constants_action_types__WEBPACK_IMPORTED_MODULE_0__["DO_LOGIN"],
     payload: token
+  };
+};
+var scanQRCode = function scanQRCode() {
+  return {
+    type: _constants_action_types__WEBPACK_IMPORTED_MODULE_0__["SCAN_QR_CODE"],
+    payload: null
+  };
+};
+var parseQRCode = function parseQRCode(result) {
+  return {
+    type: _constants_action_types__WEBPACK_IMPORTED_MODULE_0__["PARSE_QR_CODE"],
+    payload: result
   };
 };
 
@@ -40296,8 +40351,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ __webpack_exports__["default"] = (Object(redux__WEBPACK_IMPORTED_MODULE_3__["combineReducers"])({
-  login: _login__WEBPACK_IMPORTED_MODULE_2__["loginReducer"],
-  parsedQRCode: _parsedQRCode__WEBPACK_IMPORTED_MODULE_1__["QRCodeReducer"]
+  loginReducer: _login__WEBPACK_IMPORTED_MODULE_2__["loginReducer"],
+  parsedQRCodeReducer: _parsedQRCode__WEBPACK_IMPORTED_MODULE_1__["QRCodeReducer"]
 }));
 
 /***/ }),
@@ -40425,9 +40480,11 @@ var PrivateRoute = function PrivateRoute(_ref) {
       redirectTo = _ref.redirectTo,
       rest = _objectWithoutProperties(_ref, ["component", "redirectTo"]);
 
+  console.log('rest=', rest);
   return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], _extends({}, rest, {
     render: function render(routeProps) {
-      return auth.loggedIn() ? Object(_renderMergedProps__WEBPACK_IMPORTED_MODULE_0__["renderMergedProps"])(component, routeProps, rest) : react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
+      console.log('routeProps=', routeProps);
+      return !!rest.token ? Object(_renderMergedProps__WEBPACK_IMPORTED_MODULE_0__["renderMergedProps"])(component, routeProps, rest) : react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
         to: {
           pathname: redirectTo,
           state: {
@@ -40468,6 +40525,7 @@ var PropsRoute = function PropsRoute(_ref) {
   var component = _ref.component,
       rest = _objectWithoutProperties(_ref, ["component"]);
 
+  console.log('props token', rest.token);
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Route"], _extends({}, rest, {
     render: function render(routeProps) {
       return Object(_renderMergedProps__WEBPACK_IMPORTED_MODULE_2__["renderMergedProps"])(component, routeProps, rest);
@@ -40671,6 +40729,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _QRCode_scanner__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./QRCode/scanner */ "./src/QRCode/scanner.js");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -40697,7 +40757,6 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
-
 var ConnectedAppContent =
 /*#__PURE__*/
 function (_React$Component) {
@@ -40712,20 +40771,29 @@ function (_React$Component) {
   _createClass(ConnectedAppContent, [{
     key: "render",
     value: function render() {
+      var _React$createElement;
+
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         id: "content"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_5__["BrowserRouter"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_5__["Switch"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Router_propsRoute__WEBPACK_IMPORTED_MODULE_6__["PropsRoute"], {
         path: "/login",
         component: _Form_loginForm__WEBPACK_IMPORTED_MODULE_1__["default"],
         doLogin: this.props.doLogin
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Router_propsRoute__WEBPACK_IMPORTED_MODULE_6__["PropsRoute"], {
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Router_privateRoute__WEBPACK_IMPORTED_MODULE_7__["PrivateRoute"], {
         path: "/scan",
         redirectTo: "/login",
-        component: _QRCode_scanner__WEBPACK_IMPORTED_MODULE_8__["Scanner"]
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Router_propsRoute__WEBPACK_IMPORTED_MODULE_6__["PropsRoute"], {
+        component: _QRCode_scanner__WEBPACK_IMPORTED_MODULE_8__["ScannerWithRouter"],
+        parseQRCode: this.props.parseQRCode,
+        token: this.props.token
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Router_privateRoute__WEBPACK_IMPORTED_MODULE_7__["PrivateRoute"], (_React$createElement = {
         path: "/result",
         redirectTo: "/login",
-        component: _QRCode_parsedQrCode__WEBPACK_IMPORTED_MODULE_2__["default"]
+        component: _QRCode_parsedQrCode__WEBPACK_IMPORTED_MODULE_2__["default"],
+        scanQRCode: this.props.scanQRCode,
+        token: this.props.token
+      }, _defineProperty(_React$createElement, "scanQRCode", this.props.scanQRCode), _defineProperty(_React$createElement, "result", this.props.parsedQRCode), _React$createElement)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_5__["Redirect"], {
+        from: "/",
+        to: "/login"
       }))));
     }
   }]);
@@ -40735,8 +40803,8 @@ function (_React$Component) {
 
 var mapStateToProps = function mapStateToProps(state) {
   return {
-    token: state.token,
-    parsedQRCode: state.parsedQRCode
+    token: state.loginReducer.token,
+    parsedQRCode: state.parsedQRCodeReducer.parsedQRCode
   };
 };
 
@@ -40744,6 +40812,12 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return {
     doLogin: function doLogin(token) {
       return dispatch(Object(_Redux_actions_index__WEBPACK_IMPORTED_MODULE_3__["doLogin"])(token));
+    },
+    scanQRCode: function scanQRCode() {
+      return dispatch(Object(_Redux_actions_index__WEBPACK_IMPORTED_MODULE_3__["scanQRCode"])());
+    },
+    parseQRCode: function parseQRCode(result) {
+      return dispatch(Object(_Redux_actions_index__WEBPACK_IMPORTED_MODULE_3__["parseQRCode"])(result));
     }
   };
 };

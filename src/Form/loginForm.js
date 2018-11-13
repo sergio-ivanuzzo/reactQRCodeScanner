@@ -1,12 +1,13 @@
 import React from 'react';
 import Btn from './button';
 import InputField from './input';
+import {withRouter} from 'react-router-dom';
 
-export default class LoginForm extends React.Component {
+class LoginForm extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            login: null,
+            loginReducer: null,
             password: null
         }
     }
@@ -19,9 +20,11 @@ export default class LoginForm extends React.Component {
 
     onSubmit(e) {
         e.preventDefault();
-        let token = this.encode(`${this.state.login}:${this.state.password}`);
+        let token = this.encode(`${this.state.loginReducer}:${this.state.password}`);
+        console.log(this.props)
         // calling redux action
         this.props.doLogin(token);
+        this.props.history.push('/scan');
     }
 
     encode(token) {
@@ -29,7 +32,6 @@ export default class LoginForm extends React.Component {
     }
 
     render() {
-        console.log('rendered')
         return (
             <form id="login-form" onSubmit={this.onSubmit.bind(this)}>
                 <InputField type="text"
@@ -48,3 +50,6 @@ export default class LoginForm extends React.Component {
         );
     }
 }
+
+const LoginFormWithRouter = withRouter(LoginForm);
+export default LoginFormWithRouter;

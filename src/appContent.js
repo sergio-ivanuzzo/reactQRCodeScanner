@@ -1,13 +1,12 @@
 import React from 'react';
-import LoginForm from './Form/loginForm';
-import ParsedQRCode from './QRCode/parsedQrCode';
-import {doLogin} from './Redux/actions/index';
+import LoginFormWithRouter from './Form/loginForm';
+import ParsedQRCodeWithRouter from './QRCode/parsedQrCode';
+import {doLogin, scanQRCode, parseQRCode} from './Redux/actions/index';
 import {connect} from 'react-redux';
-import {BrowserRouter as Router} from 'react-router-dom';
-import {Switch} from 'react-router-dom';
+import {BrowserRouter as Router, Switch, Redirect} from 'react-router-dom';
 import {PropsRoute} from './Router/propsRoute';
 import {PrivateRoute} from './Router/privateRoute';
-import {Scanner} from './QRCode/scanner';
+import {ScannerWithRouter} from './QRCode/scanner';
 
 class ConnectedAppContent extends React.Component {
     render() {
@@ -15,9 +14,27 @@ class ConnectedAppContent extends React.Component {
             <div id="content">
                 <Router>
                     <Switch>
-                        <PropsRoute path="/login" component={LoginForm} doLogin={this.props.doLogin} />
-                        <PropsRoute path="/scan" redirectTo="/login" component={Scanner} />
-                        <PropsRoute path="/result" redirectTo="/login" component={ParsedQRCode} />
+
+                        <PropsRoute path="/login"
+                                  component={LoginFormWithRouter}
+                                  doLogin={this.props.doLogin} />
+
+                        <PrivateRoute path="/scan"
+                                  redirectTo="/login"
+                                  component={ScannerWithRouter}
+                                  parseQRCode={this.props.parseQRCode}
+                                  token={this.props.token} />
+
+                        <PrivateRoute path="/result"
+                                  redirectTo="/login"
+                                  component={ParsedQRCodeWithRouter}
+                                  scanQRCode={this.props.scanQRCode}
+                                  token={this.props.token}
+                                  scanQRCode={this.props.scanQRCode}
+                                  result={this.props.parsedQRCode} />
+
+                        <Redirect from="/" to="/login" />
+
                     </Switch>
                 </Router>
             </div>
@@ -27,13 +44,15 @@ class ConnectedAppContent extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        token: state.token,
-        parsedQRCode: state.parsedQRCode
+        token: state.loginReducer.token,
+        parsedQRCode: state.parsedQRCodeReducer.parsedQRCode
     }
 }
 
 const mapDispatchToProps = dispatch => ({
-    doLogin: token => dispatch(doLogin(token))
+    doLogin: token => dispatch(doLogin(token)),
+    scanQRCode: () => dispatch(scanQRCode()),
+    parseQRCode: (result) => dispatch(parseQRCode(result))
 });
 
 export const AppContent = connect(mapStateToProps, mapDispatchToProps)(ConnectedAppContent);

@@ -4,6 +4,6 @@ import {loginReducer} from './login';
 import {combineReducers} from 'redux';
 
 export default combineReducers({
-    login: loginReducer,
-    parsedQRCode: QRCodeReducer
+    loginReducer: loginReducer,
+    parsedQRCodeReducer: QRCodeReducer
 });

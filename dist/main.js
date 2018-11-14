@@ -40003,8 +40003,8 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
-var QR_CODE_FOUND = "white";
-var QR_CODE_NOT_FOUND = "red";
+var QR_CODE_FOUND = 'white';
+var QR_CODE_NOT_FOUND = 'red';
 
 var CaptureArea =
 /*#__PURE__*/
@@ -40313,16 +40313,14 @@ var parseQRCode = function parseQRCode(result) {
 /*!*********************************************!*\
   !*** ./src/Redux/constants/action-types.js ***!
   \*********************************************/
-/*! exports provided: ADD_ARTICLE, DO_LOGIN, SCAN_QR_CODE, PARSE_QR_CODE */
+/*! exports provided: DO_LOGIN, SCAN_QR_CODE, PARSE_QR_CODE */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_ARTICLE", function() { return ADD_ARTICLE; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DO_LOGIN", function() { return DO_LOGIN; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SCAN_QR_CODE", function() { return SCAN_QR_CODE; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PARSE_QR_CODE", function() { return PARSE_QR_CODE; });
-var ADD_ARTICLE = 'ADD_ARTICLE';
 var DO_LOGIN = 'DO_LOGIN';
 var SCAN_QR_CODE = 'SCAN_QR_CODE';
 var PARSE_QR_CODE = 'PARSE_QR_CODE';

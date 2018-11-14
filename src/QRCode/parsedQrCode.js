@@ -9,9 +9,9 @@ class ParsedQRCode extends React.Component {
     }
     render() {
         return (
-            <div className="parsed-qr-code">
-                <div className="result">{this.props.result}</div>
-                <Btn type="button" text="Scan another QR code" onClick={this.scanAnotherQRCode.bind(this)} />
+            <div className='parsed-qr-code'>
+                <div className='result'>{this.props.result}</div>
+                <Btn type='button' text='Scan another QR code' onClick={this.scanAnotherQRCode.bind(this)} />
             </div>
         );
     }

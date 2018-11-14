@@ -15,25 +15,25 @@ class ConnectedAppContent extends React.Component {
                 <Router>
                     <Switch>
 
-                        <PropsRoute path="/login"
+                        <PropsRoute path='/login'
                                   component={LoginFormWithRouter}
                                   doLogin={this.props.doLogin} />
 
-                        <PrivateRoute path="/scan"
-                                  redirectTo="/login"
+                        <PrivateRoute path='/scan'
+                                  redirectTo='/login'
                                   component={ScannerWithRouter}
                                   parseQRCode={this.props.parseQRCode}
                                   token={this.props.token} />
 
-                        <PrivateRoute path="/result"
-                                  redirectTo="/login"
+                        <PrivateRoute path='/result'
+                                  redirectTo='/login'
                                   component={ParsedQRCodeWithRouter}
                                   scanQRCode={this.props.scanQRCode}
                                   token={this.props.token}
                                   scanQRCode={this.props.scanQRCode}
                                   result={this.props.parsedQRCode} />
 
-                        <Redirect from="/" to="/login" />
+                        <Redirect from='/' to='/login' />
 
                     </Switch>
                 </Router>

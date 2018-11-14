@@ -1,8 +1,8 @@
 import React from 'react';
 import jsQR from 'jsqr';
 
-let QR_CODE_FOUND     = "white";
-let QR_CODE_NOT_FOUND = "red";
+let QR_CODE_FOUND     = 'white';
+let QR_CODE_NOT_FOUND = 'red';
 
 export default class CaptureArea extends React.Component {
     constructor(props) {
@@ -83,13 +83,13 @@ export default class CaptureArea extends React.Component {
 
     render() {
         return (
-            <div className="qr-capture-area" style={this.state.style} title={this.props.title}>
-                <svg xmlns="http://www.w3.org/2000/svg">
+            <div className='qr-capture-area' style={this.state.style} title={this.props.title}>
+                <svg xmlns='http://www.w3.org/2000/svg'>
                     <rect width={this.props.width}
                           height={this.props.height}
                           stroke={this.state.color || this.props.color}
-                          fillOpacity="0"
-                          strokeOpacity="1" />
+                          fillOpacity='0'
+                          strokeOpacity='1' />
                 </svg>
             </div>
         );

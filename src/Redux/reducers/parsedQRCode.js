@@ -1,4 +1,4 @@
-import {PARSE_QR_CODE, SCAN_QR_CODE} from "../constants/action-types";
+import {PARSE_QR_CODE, SCAN_QR_CODE} from '../constants/action-types';
 
 const initialState = {
     parsedQRCode: null
